@@ -36,6 +36,8 @@ private static final int leftYAxis_Map = 1;
 private static final int rightYAxis_Map = 5;
 //controller usb_port
   private static final int controller_port = 0;
+  private static final int controller_port_right = 1;
+  private static final int controller_port_left = 2;
   //roboRio ports
   private static final int tLMotor_port = 0;
   private static final int bLMotor_port = 1;
@@ -45,9 +47,11 @@ private static final int rightYAxis_Map = 5;
   private static double percentspeed = 1;
   //used to limit times bumpers can be used
   private static int count = 0;
-
+  
   private Timer m_timer = new Timer();
   private Joystick controller;
+  private Joystick joystickright;
+  private Joystick joystickleft;
 
   //Auton Types, declare different ones here, can be chose on Driver Station 
   private static final String kDefaultAuto = "Default";
@@ -80,6 +84,8 @@ private static final int rightYAxis_Map = 5;
      topRight =  new PWMTalonSRX(tRMotor_port);
      botRight =  new PWMTalonSRX(bRMotor_port);
      //creating controller
+    joystickright = new Joystick(controller_port_right);
+    joystickleft = new Joystick(controller_port_left);
      controller = new Joystick(controller_port);
      //grouping up motors
      leftGroup = new SpeedControllerGroup(topLeft, botLeft);
@@ -182,7 +188,7 @@ count--;
     }
     //deadzone code, might have to adjust if controller is even more off center.
     if(controller.getRawAxis(leftYAxis_Map) > .05 | controller.getRawAxis(leftYAxis_Map) < -.05 | controller.getRawAxis(rightYAxis_Map) > .05 | controller.getRawAxis(rightYAxis_Map) < -.05){
-    driveTrain.tankDrive((-controller.getRawAxis(leftYAxis_Map) * percentspeed),( -controller.getRawAxis(rightYAxis_Map) * percentspeed ));
+    driveTrain.tankDrive((-joystickleft.getRawAxis() * percentspeed),( -joystickright.getRawAxis() * percentspeed ));
     System.out.println("Right Speed : " + -controller.getRawAxis(rightYAxis_Map) * percentspeed); //Used for simulation confimation, can remove before deployment.
     System.out.println("Left Speed : " + -controller.getRawAxis(leftYAxis_Map) * percentspeed);
     }else{
