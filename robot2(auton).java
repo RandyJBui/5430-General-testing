@@ -95,7 +95,7 @@ private static final int rightYAxis_Map = 5;
     joystickleft = new Joystick(controller_port_left);
      controller = new Joystick(controller_port);
      //grouping up motors
-     leftGroup = new SpeedControllerGroup(topLeft, botLeft);
+     leftGroup = new SpeedControllerGroup(topLeft,botLeft);
      rightGroup = new SpeedControllerGroup(topRight, botRight);
      //creating drive train
      driveTrain = new DifferentialDrive(leftGroup, rightGroup);
@@ -194,7 +194,8 @@ count--;
       }
     }
     //deadzone code, might have to adjust if controller is even more off center.
-    if(joystickleft.getRawAxis() > .05 | joystickleft.getRawAxis() < -.05 | joystickright.getRawAxis() > .05 | joystickright.getRawAxis() < -.05){
+    if(joystickleft.getRawAxis() > .05 | joystickleft.getRawAxis() < -.05 | joystickright.getRawAxis() > .05 | joystickright.getRawAxis() < -.05| 
+controller.getY(Hand.kRight) > .05 | controller.getY(Hand.kLeft) > .5 ){
     driveTrain.tankDrive((-joystickleft.getRawAxis() * percentspeed),( -joystickright.getRawAxis() * percentspeed ));
    // System.out.println("Right Speed : " + -controller.getRawAxis(rightYAxis_Map) * percentspeed); //Used for simulation confimation, can remove before deployment.
   //  System.out.println("Left Speed : " + -controller.getRawAxis(leftYAxis_Map) * percentspeed);
@@ -202,13 +203,15 @@ count--;
       //must use absolute value of axis for shooter.  reason why we dont use buttons: use of another if statement will cancel or possibly stall updating code for
       //the previous part. to overcome that we could make a bunch of different else if statements with every single possible combination, but this seems like the
       //fastest most efficient work around. 
-      Spark.setSpeed(controller.get(y)
-      
+      elevator.setSpeed(ControlMode.PerentOutput, controller.getY(Hand.kLeft));
+      shooter.setSpeed(COntrolMode.PercentOutput, controller.getY(Hand.kRight));
     }else{
       //makes sure that motors dont start when there is no input
       driveTrain.tankDrive(0, 0);
+       elevator.setSpeed(ControlMode.PerentOutput, 0); // change values if we want passive charging of either elevator or shooter.
+      shooter.setSpeed(COntrolMode.PercentOutput, 0);
     }
-    if()
+    
   }
   /** This function is called once when the robot is disabled. */
   @Override
