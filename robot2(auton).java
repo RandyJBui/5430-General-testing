@@ -8,6 +8,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.Spark;
 //Timed robot is the robot base
 import edu.wpi.first.wpilibj.TimedRobot;
 //Timer method for auton or use as a buffer between inputs
@@ -43,6 +44,8 @@ private static final int rightYAxis_Map = 5;
   private static final int bLMotor_port = 1;
   private static final int tRMotor_port = 2;
   private static final int bRMotor_port = 3;
+  private static final int shooterport = 4;
+  private static final int elevatorport = 5;
   //used to modulate Motor speeds
   private static double percentspeed = 1;
   //used to limit times bumpers can be used
@@ -58,7 +61,9 @@ private static final int rightYAxis_Map = 5;
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
+//subsystem motors
+  private Spark shooter;
+  private PWMTalonSRX elevator;
   //Sides on drive train
   private SpeedControllerGroup leftGroup;
   private SpeedControllerGroup rightGroup;
@@ -79,6 +84,8 @@ private static final int rightYAxis_Map = 5;
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
    //declaring motors using ports
+    elevator = new PWMTalonSRX(elevator_port);
+    shooter = new Spark(shooter_port);
      topLeft =  new PWMTalonSRX(tLMotor_port);
      botLeft =  new PWMTalonSRX(bLMotor_port);
      topRight =  new PWMTalonSRX(tRMotor_port);
@@ -187,14 +194,21 @@ count--;
       }
     }
     //deadzone code, might have to adjust if controller is even more off center.
-    if(controller.getRawAxis(leftYAxis_Map) > .05 | controller.getRawAxis(leftYAxis_Map) < -.05 | controller.getRawAxis(rightYAxis_Map) > .05 | controller.getRawAxis(rightYAxis_Map) < -.05){
+    if(joystickleft.getRawAxis() > .05 | joystickleft.getRawAxis() < -.05 | joystickright.getRawAxis() > .05 | joystickright.getRawAxis() < -.05){
     driveTrain.tankDrive((-joystickleft.getRawAxis() * percentspeed),( -joystickright.getRawAxis() * percentspeed ));
-    System.out.println("Right Speed : " + -controller.getRawAxis(rightYAxis_Map) * percentspeed); //Used for simulation confimation, can remove before deployment.
-    System.out.println("Left Speed : " + -controller.getRawAxis(leftYAxis_Map) * percentspeed);
+   // System.out.println("Right Speed : " + -controller.getRawAxis(rightYAxis_Map) * percentspeed); //Used for simulation confimation, can remove before deployment.
+  //  System.out.println("Left Speed : " + -controller.getRawAxis(leftYAxis_Map) * percentspeed);
+      //in order to bypass the need for a whole jumble of code, where we would need an if statement, just use controller axis in order to control elevator and shooter, 
+      //must use absolute value of axis for shooter.  reason why we dont use buttons: use of another if statement will cancel or possibly stall updating code for
+      //the previous part. to overcome that we could make a bunch of different else if statements with every single possible combination, but this seems like the
+      //fastest most efficient work around. 
+      Spark.setSpeed(controller.get(y)
+      
     }else{
       //makes sure that motors dont start when there is no input
       driveTrain.tankDrive(0, 0);
     }
+    if()
   }
   /** This function is called once when the robot is disabled. */
   @Override
