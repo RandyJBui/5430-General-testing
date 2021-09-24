@@ -14,6 +14,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 //Timer method for auton or use as a buffer between inputs
 import edu.wpi.first.wpilibj.Timer;
 //
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.GenericHID.Hand; //used to defined XboxController axis (probably wont be used).
@@ -44,8 +47,8 @@ private static final int rightYAxis_Map = 5;
   private static final int bLMotor_port = 1;
   private static final int tRMotor_port = 2;
   private static final int bRMotor_port = 3;
-  private static final int shooterport = 4;
-  private static final int elevatorport = 5;
+  private static final int shooter_port = 4;
+  private static final int elevator_port = 5;
   //used to modulate Motor speeds
   private static double percentspeed = 1;
   //used to limit times bumpers can be used
@@ -194,22 +197,22 @@ count--;
       }
     }
     //deadzone code, might have to adjust if controller is even more off center.
-    if(joystickleft.getRawAxis() > .05 | joystickleft.getRawAxis() < -.05 | joystickright.getRawAxis() > .05 | joystickright.getRawAxis() < -.05| 
+    if(joystickleft.getY() > .05 | joystickleft.getY() < -.05 | joystickright.getY() > .05 | joystickright.getY() < -.05| 
 controller.getY(Hand.kRight) > .05 | controller.getY(Hand.kLeft) > .5 ){
-    driveTrain.tankDrive((-joystickleft.getRawAxis() * percentspeed),( -joystickright.getRawAxis() * percentspeed ));
+    driveTrain.tankDrive((-joystickleft.getY() * percentspeed),( -joystickright.getY() * percentspeed ));
    // System.out.println("Right Speed : " + -controller.getRawAxis(rightYAxis_Map) * percentspeed); //Used for simulation confimation, can remove before deployment.
   //  System.out.println("Left Speed : " + -controller.getRawAxis(leftYAxis_Map) * percentspeed);
       //in order to bypass the need for a whole jumble of code, where we would need an if statement, just use controller axis in order to control elevator and shooter, 
       //must use absolute value of axis for shooter.  reason why we dont use buttons: use of another if statement will cancel or possibly stall updating code for
       //the previous part. to overcome that we could make a bunch of different else if statements with every single possible combination, but this seems like the
       //fastest most efficient work around. 
-      elevator.setSpeed(ControlMode.PerentOutput, controller.getY(Hand.kLeft));
-      shooter.setSpeed(COntrolMode.PercentOutput, controller.getY(Hand.kRight));
+      elevator.setSpeed( controller.getY(Hand.kLeft));
+      shooter.setSpeed( controller.getY(Hand.kRight));
     }else{
       //makes sure that motors dont start when there is no input
       driveTrain.tankDrive(0, 0);
-       elevator.setSpeed(ControlMode.PerentOutput, 0); // change values if we want passive charging of either elevator or shooter.
-      shooter.setSpeed(COntrolMode.PercentOutput, 0);
+       elevator.setSpeed( 0); // change values if we want passive charging of either elevator or shooter.
+      shooter.setSpeed(0);
     }
     
   }
@@ -229,4 +232,3 @@ controller.getY(Hand.kRight) > .05 | controller.getY(Hand.kLeft) > .5 ){
   @Override
   public void testPeriodic() {}
 }
-//Desc
