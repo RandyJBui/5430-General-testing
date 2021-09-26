@@ -102,10 +102,10 @@ public class Robot extends TimedRobot {
     // declaring motors using ports
     elevator = new PWMTalonSRX(elevator_port);
     shooter = new Spark(shooter_port);
-    topLeft = new WPI_TalonSRX(tLMotor_port);
-    botLeft = new WPI_TalonSRX(bLMotor_port); // !!!ＩＭＰＯＲＴＡＮＴ， ＩＦ ＤＥＰＬＯＹＩＮＧ ＩＮＴＯ ＲＯＢＯＴ ＳＷＡＰ ＴＨＩＳ ＴＯ ＰＷＭ!!!
-    topRight = new WPI_TalonSRX(tRMotor_port);
-    botRight = new WPI_TalonSRX(bRMotor_port);
+    topLeft = new PWMTalonSRX(tLMotor_port);
+    botLeft = new PWMTalonSRX(bLMotor_port); // !!!ＩＭＰＯＲＴＡＮＴ， ＩＦ ＤＥＰＬＯＹＩＮＧ ＩＮＴＯ ＲＯＢＯＴ ＳＷＡＰ ＴＨＩＳ ＴＯ ＰＷＭ!!!
+    topRight = new PWMTalonSRX(tRMotor_port);
+    botRight = new PWMTalonSRX(bRMotor_port);
     spinner = new PWMTalonSRX(spinner_port);
     compressor1 = new Compressor();
     // creating controller
