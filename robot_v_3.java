@@ -301,8 +301,8 @@ public class Robot extends TimedRobot {
       //ᴍᴜꜱᴛ ᴛᴇꜱᴛ, ᴛʜᴇ ᴜꜱᴇ ᴏꜰ ʙᴜᴛᴛᴏɴꜱ + ꜱᴇɴᴅɪɴɢ ꜱᴘᴇᴇᴅ ᴠᴀʟᴜᴇꜱ, ᴄᴜʀʀᴇɴᴛ ᴛʜᴇᴏʀʏ ɪꜱ ᴛʜᴀᴛ ᴜꜱɪɴɢ ᴀɴ ɪꜰ
       // ꜱᴛᴀᴛᴇᴍᴇɴᴛ ʙᴜᴛᴛᴏɴ ᴡɪʟʟ ɪɴᴛᴇʀᴜᴘᴛ ᴛʜᴇ ꜰʟᴏᴡ ᴏꜰ ᴛʜᴇ ᴄᴏᴅᴇ, ᴀɴᴅ ᴛʜᴇ ꜱᴘᴇᴇᴅ ᴡɪʟʟ ꜱᴛᴀʟʟ, ʙᴜᴛ ᴄᴏɴꜱɪᴅᴇʀɪɴɢ ʜᴏᴡ ꜰᴀꜱᴛ ᴘᴇʀɪᴏᴅɪᴄ ɪꜱ, ᴍᴀʏʙᴇ ᴛʜᴇ ꜱᴛᴀʟʟ ᴡᴏɴᴛ ʜᴀᴠᴇ ᴀ ɢʀᴇᴀᴛ ᴄᴏɴꜱᴇQᴜᴇɴᴄᴇ?
 
-      elevator.setSpeed(controller.getY(Hand.kLeft));
-      shooter.setSpeed(controller.getY(Hand.kRight));
+      elevator.set(controller.getY(Hand.kLeft));
+      shooter.set(controller.getY(Hand.kRight));
     } else {
       // makes sure that motors dont start when there is no input
       driveTrain.tankDrive(0, 0);
